@@ -1,15 +1,26 @@
-import { React, useState } from 'react';
+// src/App.js
+import { React, useEffect, useState } from 'react';
 
 function App() {
-  const [num, setNum] = useState(0);
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    // 화면에 컴포넌트가 나타났을(mount) 때 실행하고자 하는 함수
+    console.log(`hello useEffect! : ${value} `);
+    return () => {
+      // 화면에서 컴포넌트가 사라졌을(unmount) 때 실행하고자 하는 함수
+      console.log('사라진다!');
+    };
+  }, [value]);
+
   return (
-    <>
-      <p>{num}</p>
-      {/* 기존 업데이트 방식 */}
-      <button onClick={() => setNum(num + 1)}>카운트</button>
-      {/* //함수형 업데이트 방식 */}
-      <button onClick={() => setNum((currentState) => currentState + 1)}>카운트</button>
-    </>
+    <div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </div>
   );
 }
 export default App;
