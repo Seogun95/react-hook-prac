@@ -1,26 +1,45 @@
-// src/App.js
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 
 function App() {
-  const [value, setValue] = useState('');
+  const idRef = useRef('');
+  const pwRef = useRef('');
 
+  const [id, setId] = useState('');
+
+  const changeIdInputHandler = (event) => {
+    setId(event.target.value);
+  };
+
+  // 렌더링이 될 때 id input에 자동 focusing
   useEffect(() => {
-    // 화면에 컴포넌트가 나타났을(mount) 때 실행하고자 하는 함수
-    console.log(`hello useEffect! : ${value} `);
-    return () => {
-      // 화면에서 컴포넌트가 사라졌을(unmount) 때 실행하고자 하는 함수
-      console.log('사라진다!');
-    };
-  }, [value]);
+    idRef.current.focus();
+  }, []);
+
+  // useEffect 안에 조건!
+  // id input에 길이가 10개가 넘어가면 자동으로 pw input으로 focusing
+  useEffect(() => {
+    if (id.length >= 10) {
+      pwRef.current.focus();
+    }
+  }, [id]);
 
   return (
-    <div>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </div>
+    <>
+      <div>
+        <lable>아이디 : </lable>
+        <input
+          type="text"
+          ref={idRef}
+          value={id}
+          onChange={changeIdInputHandler}
+        />
+      </div>
+      <div>
+        <lable>비밀번호 : </lable>
+        <input type="password" ref={pwRef} />
+      </div>
+    </>
   );
 }
+
 export default App;
