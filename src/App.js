@@ -1,44 +1,52 @@
-import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
-import Box1 from './components/Box1';
-import Box2 from './components/Box2';
-import Box3 from './components/Box3';
+import React, { useEffect, useState, useMemo } from 'react';
 
-const FlexDiv = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin: 1rem;
-`;
+function ObjectComponent() {
+  const [isAlive, setIsAlive] = useState(true);
+  const [uselessCount, setUselessCount] = useState(0);
 
-const App = () => {
-  console.log('App 컴포넌트가 렌더링 되었다.');
-  const [count, setCount] = useState(0);
-  const countUpBtnHandler = () => {
-    setCount(count + 1);
-  };
+  const me = useMemo(() => {
+    return {
+      name: 'Ted Chang',
+      age: 21,
+      isAlive: isAlive ? '생존' : '사망',
+    };
+  }, [isAlive]);
 
-  const countDownBtnHandler = () => {
-    setCount(count - 1);
-  };
-
-  const initCount = useCallback(() => {
-    console.log(`값이 ${count}에서 0으로 초기화 되었다`);
-    setCount(0);
-  }, [count]);
+  useEffect(() => {
+    console.log('생존여부가 바뀔 때만 호출해주세요!');
+  }, [me]);
 
   return (
     <>
-      <h1>서근 카운트</h1>
-      <p>현재 카운트: {count}</p>
-      <button onClick={countUpBtnHandler}>+</button>
-      <button onClick={countDownBtnHandler}>-</button>
-      <FlexDiv>
-        <Box1 initCount={initCount} />
-        <Box2 initCount={initCount} />
-        <Box3 initCount={initCount} />
-      </FlexDiv>
+      <div>
+        내 이름은 {me.name}이구, 나이는 {me.age}야!
+      </div>
+      <br />
+      <div>
+        <button
+          onClick={() => {
+            setIsAlive(!isAlive);
+          }}
+        >
+          누르면 살았다가 죽었다가 해요
+        </button>
+        <br />
+        생존여부 : {me.isAlive}
+      </div>
+      <hr />
+      필요없는 숫자 영역이에요!
+      <br />
+      {uselessCount}
+      <br />
+      <button
+        onClick={() => {
+          setUselessCount(uselessCount + 1);
+        }}
+      >
+        누르면 숫자가 올라가요
+      </button>
     </>
   );
-};
+}
 
-export default App;
+export default ObjectComponent;
