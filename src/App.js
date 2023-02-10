@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Box1 from './components/Box1';
 import Box2 from './components/Box2';
@@ -21,6 +21,11 @@ const App = () => {
     setCount(count - 1);
   };
 
+  const initCount = useCallback(() => {
+    console.log(`값이 ${count}에서 0으로 초기화 되었다`);
+    setCount(0);
+  }, [count]);
+
   return (
     <>
       <h1>서근 카운트</h1>
@@ -28,9 +33,9 @@ const App = () => {
       <button onClick={countUpBtnHandler}>+</button>
       <button onClick={countDownBtnHandler}>-</button>
       <FlexDiv>
-        <Box1 />
-        <Box2 />
-        <Box3 />
+        <Box1 initCount={initCount} />
+        <Box2 initCount={initCount} />
+        <Box3 initCount={initCount} />
       </FlexDiv>
     </>
   );
